@@ -123,11 +123,8 @@ void main (int argc, char *argv[]) {
         if (inx <= n) {
             // delete specific record (inx)
             strcpy(delbuf, "");
-            for(counter = 0; counter < n; counter++) {
-                if (counter != inx) {
-                    concat(delbuf, a.item[counter], rsep, END);
-                }
-            }
+            list_remove(a, inx);
+            list_string(a, delbuf, rsep, false); //create the new ctx.txt delimited strings
             ctxfile = open_for_write("ctx.txt");
             fprintf(ctxfile,"%s", delbuf);
             fclose(ctxfile);

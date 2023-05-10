@@ -3,10 +3,10 @@
 
 Wrote this for fun. Don't know if I'll really use it much.
 Incorporates several new functions I've added to the __myc.h__ project.  
-Writing C functions to do cool stuff is fun &#x1F60A;
+Writing C functions to do higher level stuff is fun &#x1F60A;
 
-ctx lets you save and recall text from/to your system clipboard or command-line.
-So you can choose previous saves to recall back to your clipboard.
+ctx lets you save and recall text from/to your system clipboard or command-line,  
+in order to recall previous saved text back to your clipboard.
 
 ![ctx](images/ctx_sshot.png "ctx run at command-line")
 

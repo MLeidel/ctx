@@ -28,7 +28,7 @@ char rsep[2] = {30, '\0'};  // record separator
 char *msg = {"Usage: \n\
  ctx many-args will-save as one-string | \n\
  ctx s  paste to ctx.txt save file | \n\
- ctx d  delete all clips in ctx.txt save file | \n\
+ ctx d  delete clips in ctx.txt save file | \n\
  ctx l  list saved clips to select for copy  \n\
  "};
 

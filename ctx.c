@@ -19,6 +19,7 @@
         see: https://github.com/MLeidel/myc
 */
 #include <myc.h>
+
 #define BUFSIZE 4096
 
 char strbuf[BUFSIZE] = {'\0'};
@@ -31,7 +32,7 @@ char *msg = {"Usage: \n\
  ctx many-args will-save as one-string | \n\
  ctx s  paste to ctx.txt save file | \n\
  ctx d  delete clips in ctx.txt save file | \n\
- ctx l  list saved clips to select for copy  \n\
+ ctx l  list saved clips to select for copy \n\
  "};
 
 void add_record(char *rec) {
@@ -62,7 +63,7 @@ void ctx_l_select_copy() {
     int inx = 0;
     int rows = 0;
     readfile (strbuf, "ctx.txt");
-    strbuf[strlen(strbuf)-2] = '\0';  // remove trailing delimiter
+    strbuf[strlen(strbuf)-1] = '\0';  // remove trailing delimiter
     rows = contains(strbuf, rsep) + 1;  // correct nbr columns
     list a = list_def(rows, BUFSIZE);
     int n = list_split(a, strbuf, rsep);
@@ -87,7 +88,7 @@ void ctx_d_select_delete() {
     int rows = 0;
     int counter = 0;
     readfile (strbuf, "ctx.txt");
-    strbuf[strlen(strbuf)-2] = '\0';  // remove trailing delimiter
+    strbuf[strlen(strbuf)-1] = '\0';  // remove trailing delimiter
     rows = contains(strbuf, rsep) + 1;  // correct nbr columns
     list a = list_def(rows, BUFSIZE);
     int n = list_split(a, strbuf, rsep);
@@ -102,6 +103,7 @@ void ctx_d_select_delete() {
         strcpy(delbuf, "");
         list_remove(a, inx);
         list_string(a, delbuf, rsep, false); //create the new ctx.txt delimited strings
+        strcat(delbuf, rsep); // add ending separator
         ctxfile = open_for_write("ctx.txt");
         fprintf(ctxfile,"%s", delbuf);
         fclose(ctxfile);
@@ -154,7 +156,7 @@ void main (int argc, char *argv[]) {
         int rows = 0;
         printf("%s%s\n", clr_fg.cyan, msg);
         readfile (strbuf, "ctx.txt");
-        strbuf[strlen(strbuf)-2] = '\0';  // remove trailing delimiter
+        strbuf[strlen(strbuf)-1] = '\0';  // remove trailing delimiter
         rows = contains(strbuf, rsep) + 1;  // correct nbr columns
         list a = list_def(rows, BUFSIZE);
         int n = list_split(a, strbuf, rsep);

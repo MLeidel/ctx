@@ -76,6 +76,7 @@ void ctx_l_select_copy() {
     cbcopy(a.item[inx]);
     printf("%s%s\n", clr_fg.green, a.item[inx]);
     printf("%s%s\n", clr_fg.cyan, "--->COPIED to system clipboard.");
+    list_del(a);
 }
 
 void ctx_d_select_delete() {
@@ -107,6 +108,7 @@ void ctx_d_select_delete() {
         ctxfile = open_for_write("ctx.txt");
         fprintf(ctxfile,"%s", delbuf);
         fclose(ctxfile);
+        list_del(a);
         printf("%s--->Deleted record index %d\n", clr_fg.cyan, inx);
     } else {
         printf("%s%s", clr_fg.dark_yellow, "Delete All Saved Clips? y|n ");
@@ -162,6 +164,7 @@ void main (int argc, char *argv[]) {
         int n = list_split(a, strbuf, rsep);
         printf("%s", clr_fg.yellow);
         list_display(a);
+        list_del(a);
         puts("");
         exit(EXIT_SUCCESS);
     }

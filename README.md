@@ -1,7 +1,7 @@
 # ctx
 ### _command-line clipboard text saving / retrieving (exchange)_
 
-Wrote this for fun. Don't know if I'll really use it much.
+Wrote this for fun. Don't know if I'll really use it much.  
 Incorporates several new functions I've added to the __myc.h__ project.  
 Writing C functions to do higher level stuff is fun &#x1F60A;
 
@@ -34,6 +34,7 @@ list_def
 list_split  
 list_display  
 list_remove
+list_inject
 list_string
 ```
 

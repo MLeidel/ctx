@@ -8,6 +8,16 @@ Writing C functions to do higher level stuff is fun &#x1F60A;
 ctx lets you save and recall text from/to your system clipboard or command-line,  
 in order to recall previous saved text back to your clipboard.
 
+Currently ctx has 5 functions:
+
+- (many args saves as one string to list)
+- (s) pastes clipboard contents to list
+- (d) deletes a saved item from list
+- (l) lists items and prompts to put an item back in the clipboard
+- (m) moves a saved item from the list to index 0 of the list
+
+
+
 ![ctx](images/ctx_sshot.png "ctx run at command-line")
 
 

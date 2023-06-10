@@ -33,6 +33,7 @@ char *msg = {"Usage: \n\
  ctx s  paste to ctx.txt save file | \n\
  ctx d  delete clips in ctx.txt save file | \n\
  ctx l  list saved clips to select for copy \n\
+ ctx m  list saved clips to select for move to 0 \n\
  "};
 
 void add_record(char *rec) {
@@ -122,6 +123,43 @@ void ctx_d_select_delete() {
     }
 }
 
+// void list_inject(list lst, char *value, int inx)
+
+void ctx_d_select_move() {
+    /* lists contents of save file "ctx.txt"
+        prompts to select row number in list
+        to move that row to position 000.
+    */
+    int inx = 0;
+    int rows = 0;
+    int counter = 0;
+    readfile (strbuf, "ctx.txt");
+    strbuf[strlen(strbuf)-1] = '\0';  // remove trailing delimiter
+    rows = contains(strbuf, rsep) + 1;  // correct nbr columns
+    list a = list_def(rows, BUFSIZE);
+    int n = list_split(a, strbuf, rsep);
+    printf("%s", clr_fg.yellow);
+    list_display(a);
+    printf("%sEnter number to move /or/ Ctrl-c: ", clr_fg.dark_yellow);
+    do {
+        scanf("%d", &inx);
+    } while (inx >= rows && inx != 99);
+    if (inx <= n) {
+        // delete specific record (inx)
+        strcpy(delbuf, "");
+        strcpy(strbuf, a.item[inx]);  // save item string to move
+        list_remove(a, inx);  // remove selected item at index
+        list_inject(a, strbuf, 0);
+        list_string(a, delbuf, rsep, false); //create the new ctx.txt delimited strings
+        strcat(delbuf, rsep); // add ending separator
+        ctxfile = open_for_write("ctx.txt");
+        fprintf(ctxfile,"%s", delbuf);
+        fclose(ctxfile);
+        list_del(a);
+        printf("%s--->moved record index %d to 000\n", clr_fg.cyan, inx);
+    }
+}
+
 /**
  *                        _
  *                       (_)
@@ -199,8 +237,13 @@ void main (int argc, char *argv[]) {
         ctx_d_select_delete();
 
     }
+    else if (flag == 'm') {
+
+        ctx_d_select_move();
+
+    }
     else {
         // 1 argv exists but it is not a valid flag
-        printf("%sInvalid flag arg [l | d | s]\n", clr_fg.red);
+        printf("%sValid args are: [s | d | l | m]\n", clr_fg.red);
     }
 }

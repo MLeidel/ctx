@@ -1,5 +1,10 @@
-// ctx.c
 /*
+            __
+      _____/ /__  __
+     / ___/ __/ |/_/
+    / /__/ /__>  <
+    \___/\__/_/|_|
+
     console program to
     save multiple items from clipboard
     set to clipboard from multiple saved items
@@ -24,7 +29,7 @@
 
 char strbuf[BUFSIZE] = {'\0'};
 char path[1024] = {'\0'};
-char delbuf[BUFSIZE] = {'\0'};
+char wrkbuf[BUFSIZE] = {'\0'};
 FILE * ctxfile;
 char flag = 'X';  // must be 'l', 'd', or 's'
 char rsep[2] = {30, '\0'};  // record separator
@@ -102,12 +107,12 @@ void ctx_d_select_delete() {
     } while (inx >= rows && inx != 99);
     if (inx <= n) {
         // delete specific record (inx)
-        strcpy(delbuf, "");
+        strcpy(wrkbuf, "");
         list_remove(a, inx);
-        list_string(a, delbuf, rsep, false); //create the new ctx.txt delimited strings
-        strcat(delbuf, rsep); // add ending separator
+        list_string(a, wrkbuf, rsep, false); //create the new ctx.txt delimited strings
+        strcat(wrkbuf, rsep); // add ending separator
         ctxfile = open_for_write("ctx.txt");
-        fprintf(ctxfile,"%s", delbuf);
+        fprintf(ctxfile,"%s", wrkbuf);
         fclose(ctxfile);
         list_del(a);
         printf("%s--->Deleted record index %d\n", clr_fg.cyan, inx);
@@ -122,8 +127,6 @@ void ctx_d_select_delete() {
         }
     }
 }
-
-// void list_inject(list lst, char *value, int inx)
 
 void ctx_d_select_move() {
     /* lists contents of save file "ctx.txt"
@@ -146,29 +149,27 @@ void ctx_d_select_move() {
     } while (inx >= rows && inx != 99);
     if (inx <= n) {
         // delete specific record (inx)
-        strcpy(delbuf, "");
+        strcpy(wrkbuf, "");
         strcpy(strbuf, a.item[inx]);  // save item string to move
         list_remove(a, inx);  // remove selected item at index
         list_inject(a, strbuf, 0);
-        list_string(a, delbuf, rsep, false); //create the new ctx.txt delimited strings
-        strcat(delbuf, rsep); // add ending separator
+        list_string(a, wrkbuf, rsep, false); //create the new ctx.txt delimited strings
+        strcat(wrkbuf, rsep); // add ending separator
         ctxfile = open_for_write("ctx.txt");
-        fprintf(ctxfile,"%s", delbuf);
+        fprintf(ctxfile,"%s", wrkbuf);
         fclose(ctxfile);
         list_del(a);
         printf("%s--->moved record index %d to 000\n", clr_fg.cyan, inx);
     }
 }
 
-/**
+/*
  *                        _
  *                       (_)
  *      _ __ ___    __ _  _  _ __
  *     | '_ ` _ \  / _` || || '_ \
  *     | | | | | || (_| || || | | |
  *     |_| |_| |_| \__,_||_||_| |_|
- *
- *
  */
 void main (int argc, char *argv[]) {
 
@@ -182,7 +183,7 @@ void main (int argc, char *argv[]) {
         to add to save file "ctx.txt"
     */
     if (argc > 2) {
-        strcon(strbuf, argv, " ", argc, 1);
+        strcon(strbuf, argv, " ", argc, 1);  // concat array of strings
         add_record(strbuf);
         printf("%s%s\n", clr_fg.cyan, "Saved from command-line:");
         printf("%s%s\n", clr_fg.green, strbuf);
@@ -194,7 +195,7 @@ void main (int argc, char *argv[]) {
     */
     if (argc < 2) {
         int rows = 0;
-        printf("%s%s\n", clr_fg.cyan, msg);
+        printf("%s%s\n", clr_fg.cyan, msg); // display a usage message
         readfile (strbuf, "ctx.txt");
         strbuf[strlen(strbuf)-1] = '\0';  // remove trailing delimiter
         rows = contains(strbuf, rsep) + 1;  // correct nbr columns
@@ -208,7 +209,7 @@ void main (int argc, char *argv[]) {
     }
 
 //  now there should be just 1 argument
-//  and it should be a flag: s, l, or d
+//  and it should be a flag: s, l, d, or m
 
 //  or just a one word string
     if (strlen(argv[1]) > 1) {
